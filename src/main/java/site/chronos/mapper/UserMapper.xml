@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="site.chronos.mapper.UserMapper" >
+  <resultMap id="BaseResultMap" type="site.chronos.entity.User" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="alisa" property="alisa" jdbcType="VARCHAR" />
+    <result column="month" property="month" jdbcType="INTEGER" />
+    <result column="year" property="year" jdbcType="INTEGER" />
+    <result column="day" property="day" jdbcType="INTEGER" />
+    <result column="zodiac" property="zodiac" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="addr_province" property="addrProvince" jdbcType="VARCHAR" />
+    <result column="addr_city" property="addrCity" jdbcType="VARCHAR" />
+    <result column="addr_county" property="addrCounty" jdbcType="VARCHAR" />
+    <result column="addr_detail" property="addrDetail" jdbcType="VARCHAR" />
+    <result column="is_del" property="isDel" jdbcType="INTEGER" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, alisa, month, year, day, zodiac, password, phone, addr_province, addr_city, addr_county, 
+    addr_detail, is_del, note, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from shikong_user
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from shikong_user
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="site.chronos.entity.User" >
+    insert into shikong_user (id, alisa, month, 
+      year, day, zodiac, 
+      password, phone, addr_province, 
+      addr_city, addr_county, addr_detail, 
+      is_del, note, create_time, 
+      update_time)
+    values (#{id,jdbcType=VARCHAR}, #{alisa,jdbcType=VARCHAR}, #{month,jdbcType=INTEGER}, 
+      #{year,jdbcType=INTEGER}, #{day,jdbcType=INTEGER}, #{zodiac,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{addrProvince,jdbcType=VARCHAR}, 
+      #{addrCity,jdbcType=VARCHAR}, #{addrCounty,jdbcType=VARCHAR}, #{addrDetail,jdbcType=VARCHAR}, 
+      #{isDel,jdbcType=INTEGER}, #{note,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="site.chronos.entity.User" >
+    insert into shikong_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="alisa != null" >
+        alisa,
+      </if>
+      <if test="month != null" >
+        month,
+      </if>
+      <if test="year != null" >
+        year,
+      </if>
+      <if test="day != null" >
+        day,
+      </if>
+      <if test="zodiac != null" >
+        zodiac,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="addrProvince != null" >
+        addr_province,
+      </if>
+      <if test="addrCity != null" >
+        addr_city,
+      </if>
+      <if test="addrCounty != null" >
+        addr_county,
+      </if>
+      <if test="addrDetail != null" >
+        addr_detail,
+      </if>
+      <if test="isDel != null" >
+        is_del,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="alisa != null" >
+        #{alisa,jdbcType=VARCHAR},
+      </if>
+      <if test="month != null" >
+        #{month,jdbcType=INTEGER},
+      </if>
+      <if test="year != null" >
+        #{year,jdbcType=INTEGER},
+      </if>
+      <if test="day != null" >
+        #{day,jdbcType=INTEGER},
+      </if>
+      <if test="zodiac != null" >
+        #{zodiac,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="addrProvince != null" >
+        #{addrProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="addrCity != null" >
+        #{addrCity,jdbcType=VARCHAR},
+      </if>
+      <if test="addrCounty != null" >
+        #{addrCounty,jdbcType=VARCHAR},
+      </if>
+      <if test="addrDetail != null" >
+        #{addrDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="isDel != null" >
+        #{isDel,jdbcType=INTEGER},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="site.chronos.entity.User" >
+    update shikong_user
+    <set >
+      <if test="alisa != null" >
+        alisa = #{alisa,jdbcType=VARCHAR},
+      </if>
+      <if test="month != null" >
+        month = #{month,jdbcType=INTEGER},
+      </if>
+      <if test="year != null" >
+        year = #{year,jdbcType=INTEGER},
+      </if>
+      <if test="day != null" >
+        day = #{day,jdbcType=INTEGER},
+      </if>
+      <if test="zodiac != null" >
+        zodiac = #{zodiac,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="addrProvince != null" >
+        addr_province = #{addrProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="addrCity != null" >
+        addr_city = #{addrCity,jdbcType=VARCHAR},
+      </if>
+      <if test="addrCounty != null" >
+        addr_county = #{addrCounty,jdbcType=VARCHAR},
+      </if>
+      <if test="addrDetail != null" >
+        addr_detail = #{addrDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="isDel != null" >
+        is_del = #{isDel,jdbcType=INTEGER},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="site.chronos.entity.User" >
+    update shikong_user
+    set alisa = #{alisa,jdbcType=VARCHAR},
+      month = #{month,jdbcType=INTEGER},
+      year = #{year,jdbcType=INTEGER},
+      day = #{day,jdbcType=INTEGER},
+      zodiac = #{zodiac,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      addr_province = #{addrProvince,jdbcType=VARCHAR},
+      addr_city = #{addrCity,jdbcType=VARCHAR},
+      addr_county = #{addrCounty,jdbcType=VARCHAR},
+      addr_detail = #{addrDetail,jdbcType=VARCHAR},
+      is_del = #{isDel,jdbcType=INTEGER},
+      note = #{note,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectByPhone" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from shikong_user
+    where phone = #{phone,jdbcType=VARCHAR} and is_del = 0
+  </select>
+</mapper>

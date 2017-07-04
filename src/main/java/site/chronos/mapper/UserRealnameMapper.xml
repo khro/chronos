@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="site.chronos.mapper.UserRealnameMapper" >
+  <resultMap id="BaseResultMap" type="site.chronos.entity.UserRealname" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="idcard" property="idcard" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="is_real" property="isReal" jdbcType="INTEGER" />
+    <result column="real_channel" property="realChannel" jdbcType="VARCHAR" />
+    <result column="real_name_time" property="realNameTime" jdbcType="VARCHAR" />
+    <result column="is_del" property="isDel" jdbcType="INTEGER" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, idcard, name, is_real, real_channel, real_name_time, is_del, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from shikong_user_realname
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from shikong_user_realname
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="site.chronos.entity.UserRealname" >
+    insert into shikong_user_realname (id, user_id, idcard, 
+      name, is_real, real_channel, 
+      real_name_time, is_del, update_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR}, #{idcard,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{isReal,jdbcType=INTEGER}, #{realChannel,jdbcType=VARCHAR}, 
+      #{realNameTime,jdbcType=VARCHAR}, #{isDel,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="site.chronos.entity.UserRealname" >
+    insert into shikong_user_realname
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="idcard != null" >
+        idcard,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="isReal != null" >
+        is_real,
+      </if>
+      <if test="realChannel != null" >
+        real_channel,
+      </if>
+      <if test="realNameTime != null" >
+        real_name_time,
+      </if>
+      <if test="isDel != null" >
+        is_del,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="idcard != null" >
+        #{idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="isReal != null" >
+        #{isReal,jdbcType=INTEGER},
+      </if>
+      <if test="realChannel != null" >
+        #{realChannel,jdbcType=VARCHAR},
+      </if>
+      <if test="realNameTime != null" >
+        #{realNameTime,jdbcType=VARCHAR},
+      </if>
+      <if test="isDel != null" >
+        #{isDel,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="site.chronos.entity.UserRealname" >
+    update shikong_user_realname
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="idcard != null" >
+        idcard = #{idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="isReal != null" >
+        is_real = #{isReal,jdbcType=INTEGER},
+      </if>
+      <if test="realChannel != null" >
+        real_channel = #{realChannel,jdbcType=VARCHAR},
+      </if>
+      <if test="realNameTime != null" >
+        real_name_time = #{realNameTime,jdbcType=VARCHAR},
+      </if>
+      <if test="isDel != null" >
+        is_del = #{isDel,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="site.chronos.entity.UserRealname" >
+    update shikong_user_realname
+    set user_id = #{userId,jdbcType=VARCHAR},
+      idcard = #{idcard,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      is_real = #{isReal,jdbcType=INTEGER},
+      real_channel = #{realChannel,jdbcType=VARCHAR},
+      real_name_time = #{realNameTime,jdbcType=VARCHAR},
+      is_del = #{isDel,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
