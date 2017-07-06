@@ -10,6 +10,7 @@ public class CommonConstants {
     public static final Gson GSONIGNORENULL = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
     
     public static final String CODE= "000000";
+    public static final String SESSION_KEY= "USER";
     
     public static enum ErrorCode{
 

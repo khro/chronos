@@ -18,8 +18,14 @@ public class ChronosApplication {
 		SpringApplication.run(ChronosApplication.class, args);
 	}
 	
+	/**
+	 * bcrypt加密
+	 * @return
+	 */
 	@Bean
 	public BCryptPasswordEncoder bcrypt(){
 		return new BCryptPasswordEncoder();
 	} 
+	
+	
 }

@@ -17,30 +17,39 @@ import site.chronos.constant.CommonConstants;
 import site.chronos.service.UserService;
 import site.chronos.utils.Result;
 
-
 @Controller
 @RequestMapping("/u")
 @ResponseBody
-@Api(value = "用户模块", tags = "UserController", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE,authorizations={})
+@Api(value = "用户模块", tags = "UserController", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, authorizations = {})
 public class UserController {
-	
+
 	@Autowired
 	private UserService userService;
-	
-	@ApiOperation(value="login",notes="登录")
+
+	@ApiOperation(value = "login", notes = "登录")
 	@PutMapping("/login")
-	public ResponseEntity<Object> TestAction(@RequestParam("phone")String phone,@RequestParam("pass")String pass,HttpSession session) throws Exception {
+	public ResponseEntity<Object> login(@RequestParam("phone") String phone, @RequestParam("pass") String pass,
+			HttpSession session) throws Exception {
 		Result userLogin = userService.userLogin(phone, pass);
 		if(CommonConstants.CODE.equals(userLogin.getCode())){
-			session.setAttribute(phone, pass);
+			session.setAttribute(CommonConstants.SESSION_KEY, phone);
 		}
-	      return ResponseEntity.ok(userLogin);
-	  }
-	@ApiOperation(value="regiest",notes="注册")
+		return ResponseEntity.ok(userLogin);
+	}
+	
+	@ApiOperation(value = "loginOut", notes = "登出")
+	@PutMapping("/loginOut")
+	public ResponseEntity<Object> loginOut(HttpSession session) throws Exception {
+		session.removeAttribute(CommonConstants.SESSION_KEY);
+		return ResponseEntity.ok(new Result());
+	}
+
+	@ApiOperation(value = "regiest", notes = "注册")
 	@PutMapping("/regiest")
-	public ResponseEntity<Object> regiestAction(@RequestParam("phone")String phone,@RequestParam("pass")String pass,HttpSession session) throws Exception {
-			Result userRegiest = userService.userRegiest(phone, pass);
-	      return ResponseEntity.ok(userRegiest);
-	  }
+	public ResponseEntity<Object> regiest(@RequestParam("phone") String phone, @RequestParam("pass") String pass,
+			HttpSession session) throws Exception {
+		Result userRegiest = userService.userRegiest(phone, pass);
+		return ResponseEntity.ok(userRegiest);
+	}
 
 }

@@ -42,5 +42,18 @@ public class QuestionController {
 			Result userRegiest = questionService.addQuestion(question);
 	      return ResponseEntity.ok(userRegiest);
 	  }
+	
+	@ApiOperation(value="sortQuestion",notes="置顶Question")
+	@PutMapping("/{id}")
+	public ResponseEntity<Object> sortQuestion(@PathVariable("id") String id,HttpSession session) throws Exception {
+			Result userRegiest = questionService.sortQuestion(id);
+	      return ResponseEntity.ok(userRegiest);
+	  }
 
+	@ApiOperation(value="selectQuestion",notes="置顶Question")
+	@PutMapping("/selectQuestion")
+	public ResponseEntity<Object> selectQuestion() throws Exception {
+			Result questionAll = questionService.selectQuestionAll();
+	      return ResponseEntity.ok(questionAll);
+	  }
 }

@@ -1,5 +1,6 @@
 package site.chronos.service.impl;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
@@ -8,9 +9,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.github.pagehelper.PageInfo;
+
 import site.chronos.constant.CommonConstants;
 import site.chronos.constant.CommonConstants.ErrorCode;
+import site.chronos.entity.Comment;
 import site.chronos.entity.Question;
+import site.chronos.entity.page.QuestionPage;
 import site.chronos.exception.BusinessException;
 import site.chronos.mapper.QuestionMapper;
 import site.chronos.service.QuestionService;
@@ -29,6 +34,9 @@ public class QuestionServiceImpl implements QuestionService {
 	private UserService userService;
 	
 	
+	/**
+	 * 根据ID查询问题
+	 */
 	@Override
 	public Result selectById(String id) {
 		LOGGER.info("查询question入参：{}",id);
@@ -38,6 +46,10 @@ public class QuestionServiceImpl implements QuestionService {
 		Question selectByPrimaryKey = questionMapper.selectByPrimaryKey(id);
 		return new Result(selectByPrimaryKey);
 	}
+	
+	/**
+	 * 添加一条问题
+	 */
 	@Override
 	public Result addQuestion(Question question) {
 		long startTime = System.currentTimeMillis();
@@ -69,6 +81,10 @@ public class QuestionServiceImpl implements QuestionService {
 		LOGGER.info("添加完成,耗时：{}",System.currentTimeMillis()-startTime);
 		return new Result(insertSelective);
 	}
+	
+	/**
+	 * 将该问题置顶
+	 */
 	@Override
 	public Result sortQuestion(String id) {
 		if(StringUtils.isEmpty(id)){
@@ -90,4 +106,13 @@ public class QuestionServiceImpl implements QuestionService {
 		return new Result(updateByPrimaryKeySelective);
 	}
 
+	@Override
+	public Result selectQuestionAll() {
+		QuestionPage questionPage = new QuestionPage();
+		List<Question> selectQuestionAll = questionMapper.selectQuestionAll(questionPage);
+		PageInfo<Question> pageInfo = new PageInfo<>(selectQuestionAll);
+		return new Result(pageInfo);
+	}
+
+	
 }
