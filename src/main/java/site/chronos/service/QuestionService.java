@@ -1,7 +1,7 @@
 package site.chronos.service;
 
+import site.chronos.constant.Result;
 import site.chronos.entity.Question;
-import site.chronos.utils.Result;
 
 public interface QuestionService {
 	
@@ -34,4 +34,11 @@ public interface QuestionService {
 	 */
 	public Result selectQuestionAll();
 
+	
+	/**
+	 * 查询用户未审核的问题
+	 * @param id
+	 * @return
+	 */
+	public Result selectQuestionNotReview(String userId);
 }

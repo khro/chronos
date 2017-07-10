@@ -3,28 +3,41 @@ package site.chronos.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(value = "UserRealname", description = "用户实名信息")
 public class UserRealname  implements Serializable{
     /**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@ApiModelProperty("ID")
 	private Integer id;
 
+	@ApiModelProperty("用户ID")
     private String userId;
 
+	@ApiModelProperty("身份证")
     private String idcard;
 
+	@ApiModelProperty("姓名")
     private String name;
 
+	@ApiModelProperty("是否实名")
     private Integer isReal;
 
+	@ApiModelProperty("实名渠道")
     private String realChannel;
 
+	@ApiModelProperty("实名时间")
     private String realNameTime;
 
+	@ApiModelProperty("是否删除 0已删除 1未删除")
     private Integer isDel;
 
+	@ApiModelProperty("最后更新时间")
     private Date updateTime;
 
     public Integer getId() {

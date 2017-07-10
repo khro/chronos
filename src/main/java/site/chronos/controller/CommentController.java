@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import site.chronos.constant.Result;
 import site.chronos.service.CommentService;
-import site.chronos.utils.Result;
 
 @Controller
 @RequestMapping("/c")
@@ -25,14 +25,14 @@ public class CommentController {
 
 	@ApiOperation(value = "/", notes = "根据问题查询Comment")
 	@GetMapping("/question/{questionId}")
-	public ResponseEntity<Object> TestAction(@PathVariable("questionId") String questionId) throws Exception {
+	public ResponseEntity<Object> question(@PathVariable("questionId") String questionId) throws Exception {
 		Result selectById = commentService.selectByQuestion(questionId);
 		return ResponseEntity.ok(selectById);
 	}
 
 	@ApiOperation(value = "/", notes = "根据评论查询Comment")
 	@GetMapping("/{commentId}")
-	public ResponseEntity<Object> regiestAction(@PathVariable("commentId") String commentId) throws Exception {
+	public ResponseEntity<Object> getCommentByCommentId(@PathVariable("commentId") String commentId) throws Exception {
 		Result selectById = commentService.selectByComment(commentId);
 		return ResponseEntity.ok(selectById);
 	}

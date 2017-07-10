@@ -149,6 +149,13 @@
     ,
     <include refid="Blob_Column_List" />
     from chronos_question
-    where is_del = 0
+   
+    <where>
+        <if test="status!=null and status!=''">
+            status=#{status}
+        </if>
+    	and is_del = 0 
+    </where>
+     order by create_time desc;
   </select>
 </mapper>

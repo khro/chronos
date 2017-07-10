@@ -1,6 +1,6 @@
 package site.chronos.service;
 
-import site.chronos.utils.Result;
+import site.chronos.constant.Result;
 
 public interface CommentService {
 	

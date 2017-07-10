@@ -15,30 +15,34 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import site.chronos.constant.Result;
+import site.chronos.controller.core.BaseController;
 import site.chronos.entity.Question;
 import site.chronos.service.QuestionService;
-import site.chronos.utils.Result;
 
 
 @Controller
 @RequestMapping("/q")
 @ResponseBody
 @Api(value = "问题模块", tags = "QuestionController", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE,authorizations={})
-public class QuestionController {
+public class QuestionController extends BaseController{
 	
 	@Autowired
 	private QuestionService questionService;
 	
 	@ApiOperation(value="/",notes="查询Question")
 	@GetMapping("/{id}")
-	public ResponseEntity<Object> TestAction(@PathVariable("id") String id) throws Exception {
+	public ResponseEntity<Object> question(@PathVariable("id") String id) throws Exception {
 		Result selectById = questionService.selectById(id);
 	      return ResponseEntity.ok(selectById);
 	  }
 	
 	@ApiOperation(value="addQuestion",notes="添加Question")
 	@PutMapping("/addQuestion")
-	public ResponseEntity<Object> regiestAction(@RequestBody Question question,HttpSession session) throws Exception {
+	public ResponseEntity<Object> addQuestion(@RequestBody Question question,HttpSession session) throws Exception {
+			String userId = getId(session);
+			question.setUserId(userId);
+			System.out.println("*******************"+userId);
 			Result userRegiest = questionService.addQuestion(question);
 	      return ResponseEntity.ok(userRegiest);
 	  }

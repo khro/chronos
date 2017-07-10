@@ -18,10 +18,11 @@
     <result column="note" property="note" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="VARCHAR" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, alisa, month, year, day, zodiac, password, phone, addr_province, addr_city, addr_county, 
-    addr_detail, is_del, note, create_time, update_time
+    addr_detail, is_del, note, create_time, update_time, status
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -39,13 +40,13 @@
       password, phone, addr_province, 
       addr_city, addr_county, addr_detail, 
       is_del, note, create_time, 
-      update_time)
+      update_time, status)
     values (#{id,jdbcType=VARCHAR}, #{alisa,jdbcType=VARCHAR}, #{month,jdbcType=INTEGER}, 
       #{year,jdbcType=INTEGER}, #{day,jdbcType=INTEGER}, #{zodiac,jdbcType=VARCHAR}, 
       #{password,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{addrProvince,jdbcType=VARCHAR}, 
       #{addrCity,jdbcType=VARCHAR}, #{addrCounty,jdbcType=VARCHAR}, #{addrDetail,jdbcType=VARCHAR}, 
       #{isDel,jdbcType=INTEGER}, #{note,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, 
-      #{updateTime,jdbcType=TIMESTAMP})
+      #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="site.chronos.entity.User" >
     insert into shikong_user
@@ -98,6 +99,9 @@
       <if test="updateTime != null" >
         update_time,
       </if>
+      <if test="status != null" >
+        status,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -147,6 +151,9 @@
       </if>
       <if test="updateTime != null" >
         #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -198,6 +205,9 @@
       <if test="updateTime != null" >
         update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
@@ -217,7 +227,8 @@
       is_del = #{isDel,jdbcType=INTEGER},
       note = #{note,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=VARCHAR},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=INTEGER}
     where id = #{id,jdbcType=VARCHAR}
   </update>
   

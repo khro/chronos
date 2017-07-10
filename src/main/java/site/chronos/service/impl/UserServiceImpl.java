@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import site.chronos.constant.CommonConstants;
+import site.chronos.constant.Result;
 import site.chronos.entity.User;
 import site.chronos.exception.BusinessException;
 import site.chronos.mapper.UserMapper;
 import site.chronos.service.UserService;
-import site.chronos.utils.Result;
 import site.chronos.utils.Utils;
 
 
@@ -90,8 +90,32 @@ public class UserServiceImpl implements UserService{
 		if(StringUtils.isEmpty(id)){
 			throw new BusinessException(CommonConstants.ErrorCode.ERROR_ILLEGAL_PARAMTER);//ID为空
 		}
+		System.out.println(id);
 		User selectByPrimaryKey = userMapper.selectByPrimaryKey(id);
+		if(selectByPrimaryKey == null){
+			throw new BusinessException(CommonConstants.ErrorCode.ERROR_ILLEGAL_USER);//用户不存在
+		}
 		return new Result(selectByPrimaryKey);
+	}
+	
+	/**
+	 * 用户状态改变
+	 */
+	@Override
+	public Result userChange(String userId, Integer status) {
+		if(StringUtils.isEmpty(userId)){
+			throw new BusinessException(CommonConstants.ErrorCode.ERROR_PARAMS); //手机号非法
+		}
+		if(status == null){
+			throw new BusinessException(CommonConstants.ErrorCode.ERROR_PARAMS,"用户状态非法"); //手机号非法
+		}
+		User user = userMapper.selectByPrimaryKey(userId);
+		if(user == null){
+			throw new BusinessException(CommonConstants.ErrorCode.ERROR_ILLEGAL_USER); //用户不存在
+		}
+		user.setStatus(status);
+		userMapper.updateByPrimaryKeySelective(user);
+		return new Result();
 	}
 
 }

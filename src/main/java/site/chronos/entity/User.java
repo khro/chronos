@@ -3,47 +3,79 @@ package site.chronos.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+
+@ApiModel(value = "User", description = "用户信息")
 public class User implements Serializable{
     /**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	
+	@ApiModelProperty("ID")
 	private String id;
 
+	@ApiModelProperty("别名")
     private String alisa;
 
+	@ApiModelProperty("出生月")
     private Integer month;
 
+	@ApiModelProperty("出生年")
     private Integer year;
-
+	
+	@ApiModelProperty("出生日")
     private Integer day;
 
+	@ApiModelProperty("星座")
     private String zodiac;
 
+	@ApiModelProperty("Phone")
     private String phone;
 
+	@ApiModelProperty("地址 省/直辖市")
     private String addrProvince;
 
+	@ApiModelProperty("市")
     private String addrCity;
 
+	@ApiModelProperty("县/县级市")
     private String addrCounty;
 
+	@ApiModelProperty("详细地址")
     private String addrDetail;
 
+	@ApiModelProperty("是否删除  0未删除  1已删除")
     private Integer isDel;
 
+	@ApiModelProperty("备注")
     private String note;
 
+	@ApiModelProperty("创建时间")
     private String createTime;
 
+	@ApiModelProperty("最后更新时间")
     private Date updateTime;
     
+	@ApiModelProperty("密码")
     private String password;
+    
+	@ApiModelProperty("状态")
+    private Integer status;
     
     
 
-    public String getPassword() {
+    public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	public String getPassword() {
 		return password;
 	}
 

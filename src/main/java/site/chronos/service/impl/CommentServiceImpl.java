@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageInfo;
 
+import site.chronos.constant.Result;
 import site.chronos.entity.Comment;
 import site.chronos.entity.page.CommentPage;
 import site.chronos.mapper.CommentMapper;
 import site.chronos.service.CommentService;
-import site.chronos.utils.Result;
 
 @Service
 public class CommentServiceImpl implements CommentService {

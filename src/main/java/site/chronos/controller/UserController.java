@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import site.chronos.constant.CommonConstants;
+import site.chronos.constant.Result;
 import site.chronos.service.UserService;
-import site.chronos.utils.Result;
 
 @Controller
 @RequestMapping("/u")

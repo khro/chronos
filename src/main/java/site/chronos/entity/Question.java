@@ -3,26 +3,38 @@ package site.chronos.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(value = "Question", description = "问题信息")
 public class Question  implements Serializable{
     /**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@ApiModelProperty("ID")
 	private String id;
 
+	@ApiModelProperty("用户ID")
     private String userId;
 
+	@ApiModelProperty("创建时间")
     private String createTime;
 
+	@ApiModelProperty("最后更新时间")
     private Date updateTime;
 
+	@ApiModelProperty("是否置顶")
     private Integer sort;
 
+	@ApiModelProperty("标题")
     private String title;
 
+	@ApiModelProperty("是否删除  0未删除  1已删除")
     private Integer isDel;
 
+	@ApiModelProperty("问题内容")
     private String question;
 
     public String getId() {

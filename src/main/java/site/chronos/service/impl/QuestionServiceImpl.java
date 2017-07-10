@@ -12,15 +12,14 @@ import org.springframework.stereotype.Service;
 import com.github.pagehelper.PageInfo;
 
 import site.chronos.constant.CommonConstants;
+import site.chronos.constant.Result;
 import site.chronos.constant.CommonConstants.ErrorCode;
-import site.chronos.entity.Comment;
 import site.chronos.entity.Question;
 import site.chronos.entity.page.QuestionPage;
 import site.chronos.exception.BusinessException;
 import site.chronos.mapper.QuestionMapper;
 import site.chronos.service.QuestionService;
 import site.chronos.service.UserService;
-import site.chronos.utils.Result;
 import site.chronos.utils.Utils;
 @Service
 public class QuestionServiceImpl implements QuestionService {
@@ -58,17 +57,17 @@ public class QuestionServiceImpl implements QuestionService {
 			throw new BusinessException(ErrorCode.ERROR_ILLEGAL_PARAMTER,"用户ID为空");//SORT有误
 		}
 		if(StringUtils.isEmpty(question.getTitle())){
-			throw new BusinessException(ErrorCode.ERROR_TITLE,"用户ID为空");//SORT有误
+			throw new BusinessException(ErrorCode.ERROR_TITLE,"标题为空");//标题为空
 		}
 		if(StringUtils.isEmpty(question.getQuestion())){
-			throw new BusinessException(ErrorCode.ERROR_QUESTION);//SORT有误
+			throw new BusinessException(ErrorCode.ERROR_QUESTION);//内容为空
 		}
 		if(question.getQuestion().length() < 2){
-			throw new BusinessException(ErrorCode.ERROR_QUESTION,"问题内容太短");//SORT有误
+			throw new BusinessException(ErrorCode.ERROR_QUESTION,"问题内容太短");//问题内容太短
 		}
 		Result selectUserById = userService.selectUserById(question.getUserId());
 		if(Objects.isNull(selectUserById.getResult())){
-			throw new BusinessException(ErrorCode.ERROR_ILLEGAL_PARAMTER);//SORT有误
+			throw new BusinessException(ErrorCode.ERROR_ILLEGAL_PARAMTER);//User不存在
 		}
 		question.setId(Utils.getNewId());
 		question.setCreateTime(Utils.getNewTime());
@@ -77,9 +76,9 @@ public class QuestionServiceImpl implements QuestionService {
 				throw new BusinessException(ErrorCode.ERROR_PARAMS);//SORT有误
 			}
 		}
-		int insertSelective = questionMapper.insertSelective(question);
+		questionMapper.insertSelective(question);
 		LOGGER.info("添加完成,耗时：{}",System.currentTimeMillis()-startTime);
-		return new Result(insertSelective);
+		return new Result(question);
 	}
 	
 	/**
@@ -109,10 +108,19 @@ public class QuestionServiceImpl implements QuestionService {
 	@Override
 	public Result selectQuestionAll() {
 		QuestionPage questionPage = new QuestionPage();
-		List<Question> selectQuestionAll = questionMapper.selectQuestionAll(questionPage);
+		List<Question> selectQuestionAll = questionMapper.selectQuestionAll(questionPage.enablePaging());
 		PageInfo<Question> pageInfo = new PageInfo<>(selectQuestionAll);
 		return new Result(pageInfo);
 	}
 
-	
+	@Override
+	public Result selectQuestionNotReview(String userId) {
+		if(StringUtils.isEmpty(userId)){
+			throw new BusinessException(ErrorCode.ERROR_PARAMS);//USER为空
+		}
+		QuestionPage questionPage = new QuestionPage();
+		questionPage.setUserId(userId);
+		List<Question> selectQuestionAll = questionMapper.selectQuestionAll(questionPage);
+		return new Result(selectQuestionAll);
+	}
 }

@@ -1,6 +1,6 @@
 package site.chronos.service;
 
-import site.chronos.utils.Result;
+import site.chronos.constant.Result;
 
 public interface UserService {
 	
@@ -33,6 +33,14 @@ public interface UserService {
 	 * @return
 	 */
 	public Result userLogin(String phone,String pass);
+	
+	/**
+	 * 用户成为提问者
+	 * @param phone
+	 * @param pass
+	 * @return
+	 */
+	public Result userChange(String userId,Integer status);
 	
 
 }

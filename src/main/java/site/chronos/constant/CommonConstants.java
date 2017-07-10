@@ -46,7 +46,8 @@ public class CommonConstants {
         ERROR_PHONE_REGIEST(0xFF007, "该手机号已被注册"),
         ERROR_TITLE(0xFF008, "标题为空"),
         ERROR_QUESTION(0xFF009, "内容为空"),
-        
+        ERROR_ADD_REVIEW(0xFF010, "还有未审核问题。"),
+        ERROR_REVIEW_NULL(0xFF011, "审核不存在。"),
         ;
         private Integer code;
         private String description;

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import site.chronos.constant.CommonConstants;
-import site.chronos.utils.Result;
+import site.chronos.constant.Result;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
