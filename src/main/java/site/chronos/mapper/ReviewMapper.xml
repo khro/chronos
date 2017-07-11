@@ -157,6 +157,6 @@
            and is_del=#{isDel}
         </if>
     </where>
-    order by create_time;
+    order by create_time
   </select>
 </mapper>

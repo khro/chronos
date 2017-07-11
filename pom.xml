@@ -129,6 +129,10 @@
 		    <artifactId>pagehelper</artifactId>
 		    <version>4.1.0</version>
 		</dependency>
+		<dependency>
+			<groupId>antlr</groupId>
+			<artifactId>antlr</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

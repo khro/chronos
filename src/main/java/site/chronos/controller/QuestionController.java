@@ -40,9 +40,9 @@ public class QuestionController extends BaseController{
 	@ApiOperation(value="addQuestion",notes="添加Question")
 	@PutMapping("/addQuestion")
 	public ResponseEntity<Object> addQuestion(@RequestBody Question question,HttpSession session) throws Exception {
-			String userId = getId(session);
-			question.setUserId(userId);
-			System.out.println("*******************"+userId);
+//			String userId = getId(session);
+//			question.setUserId(userId);
+//			System.out.println("*******************"+userId);
 			Result userRegiest = questionService.addQuestion(question);
 	      return ResponseEntity.ok(userRegiest);
 	  }
@@ -54,7 +54,7 @@ public class QuestionController extends BaseController{
 	      return ResponseEntity.ok(userRegiest);
 	  }
 
-	@ApiOperation(value="selectQuestion",notes="置顶Question")
+	@ApiOperation(value="selectQuestion",notes="查询自己所有的Question")
 	@PutMapping("/selectQuestion")
 	public ResponseEntity<Object> selectQuestion() throws Exception {
 			Result questionAll = questionService.selectQuestionAll();

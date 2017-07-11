@@ -17,6 +17,7 @@ import site.chronos.constant.Result;
 import site.chronos.constant.CommonConstants.ErrorCode;
 import site.chronos.entity.Question;
 import site.chronos.entity.Review;
+import site.chronos.entity.page.QuestionPage;
 import site.chronos.entity.page.ReviewPage;
 import site.chronos.exception.BusinessException;
 import site.chronos.mapper.ReviewMapper;
@@ -43,7 +44,9 @@ public class ReviewServiceImpl implements ReviewService {
 			throw new BusinessException(ErrorCode.ERROR_PARAMS,"用户为空");//ID有误
 		}
 		
-		Result selectQuestionNotReview = questionService.selectQuestionNotReview(question.getUserId());
+		QuestionPage questionPage = new QuestionPage(); 
+		questionPage.setUserId(question.getUserId());
+		Result selectQuestionNotReview = questionService.selectQuestionNotReview(questionPage);
 		@SuppressWarnings("unchecked")
 		List<Question> result = (List<Question>)selectQuestionNotReview.getResult();
 		if(ObjectUtils.isEmpty(result)){
@@ -61,10 +64,8 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public Result selectReview(Integer status) {
-		ReviewPage reviewPage = new ReviewPage();
-		reviewPage.setStatus(status);
-		List<Review> selectReview = reviewMapper.selectReview(reviewPage);
+	public Result selectReview(ReviewPage reviewPage) {
+		List<Review> selectReview = reviewMapper.selectReview(reviewPage.enablePaging());
 		PageInfo<Review> pageInfo = new PageInfo<>(selectReview);
 		return new Result(pageInfo);
 	}
@@ -94,21 +95,36 @@ public class ReviewServiceImpl implements ReviewService {
 		if(Objects.isNull(selectByPrimaryKey)){
 			throw new BusinessException(ErrorCode.ERROR_REVIEW_NULL);//ID有误
 		}
+		if(selectByPrimaryKey.getStatus() < 0 || selectByPrimaryKey.getStatus() > 9){
+			throw new BusinessException(ErrorCode.ERROR_PARAMS,"已经审核过。");//已经审核过了，不需要再审核了。
+		}
 		if(status == 0){
 			throw new BusinessException(ErrorCode.ERROR_PARAMS,"状态值不可改变");//ID有误
 		}
 		if(status == selectByPrimaryKey.getStatus()){
 			throw new BusinessException(ErrorCode.ERROR_PARAMS,"状态不需要改变");//ID有误
 		}
+		Question question = new Question();
+		question.setId(selectByPrimaryKey.getQuestionId());
 		if(status == -1){ //审核不通过
 			selectByPrimaryKey.setStatus(-1);
 			reviewMapper.updateByPrimaryKeySelective(selectByPrimaryKey);
-		}
-		if(status == 10){ //审核通过
+			question.setIsReview("-1");
+			
+		}else if(status == 10){ //审核通过
 			selectByPrimaryKey.setStatus(10);
 			reviewMapper.updateByPrimaryKeySelective(selectByPrimaryKey);
 			userService.userChange(selectByPrimaryKey.getUserId(), status); //用户成为提问者
+			question.setIsReview("10");
+		}else if(status == 1){
+			selectByPrimaryKey.setStatus(1);
+			reviewMapper.updateByPrimaryKeySelective(selectByPrimaryKey);
+			userService.userChange(selectByPrimaryKey.getUserId(), status); //用户成为提问者
+			question.setIsReview("1");
+		}else{
+			throw new BusinessException(ErrorCode.ERROR_ACTION);//操作有误
 		}
+		questionService.updateQuestion(question);
 		return new Result();
 	}
 

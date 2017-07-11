@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import site.chronos.constant.CommonConstants;
 import site.chronos.constant.Result;
 
-@ControllerAdvice
+//@ControllerAdvice
 public class GlobalExceptionHandler {
 	private static Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 	

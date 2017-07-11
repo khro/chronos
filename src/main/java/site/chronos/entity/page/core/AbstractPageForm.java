@@ -2,6 +2,8 @@ package site.chronos.entity.page.core;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Max;
+
 import com.github.pagehelper.PageHelper;
 
 public abstract class AbstractPageForm<T extends AbstractPageForm<T>> implements Serializable {
@@ -16,6 +18,7 @@ public abstract class AbstractPageForm<T extends AbstractPageForm<T>> implements
     /**
      * @Description 每页显示数量，默认为10
      */
+    @Max(50)
     protected int pageSize = 10;
  
     public int getPageNum() {

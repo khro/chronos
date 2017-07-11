@@ -36,6 +36,9 @@ public class Question  implements Serializable{
 
 	@ApiModelProperty("问题内容")
     private String question;
+	
+	@ApiModelProperty("审核结果 0 未审核  1搁置  10审核通过 -1未通过")
+    private String isReview;
 
     public String getId() {
         return id;
@@ -100,4 +103,14 @@ public class Question  implements Serializable{
     public void setQuestion(String question) {
         this.question = question == null ? null : question.trim();
     }
+
+	public String getIsReview() {
+		return isReview;
+	}
+
+	public void setIsReview(String isReview) {
+		this.isReview = isReview;
+	}
+    
+    
 }

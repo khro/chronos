@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService{
 		if(!matches){
 			throw new BusinessException(CommonConstants.ErrorCode.ERROR_PASS_);//密码错误
 		}
-		return new Result();
+		return new Result(user.getId());
 	}
 	
 	@Override

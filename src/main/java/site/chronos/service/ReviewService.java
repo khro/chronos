@@ -2,6 +2,7 @@ package site.chronos.service;
 
 import site.chronos.constant.Result;
 import site.chronos.entity.Question;
+import site.chronos.entity.page.ReviewPage;
 
 public interface ReviewService {
 
@@ -17,7 +18,7 @@ public interface ReviewService {
 	 * @param reviewPage
 	 * @return
 	 */
-	public Result selectReview(Integer status);
+	public Result selectReview(ReviewPage reviewPage);
 	
 	/**
 	 * 查询已删除审核信息

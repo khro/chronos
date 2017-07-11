@@ -22,7 +22,7 @@ public class Review implements Serializable{
 	@ApiModelProperty("用户ID")
     private String userId;
 
-	@ApiModelProperty("审核类型")
+	@ApiModelProperty("审核类型，同意 ，拒绝 ，搁置")
     private String action;
 
 	@ApiModelProperty("申请创建时间")
@@ -42,6 +42,7 @@ public class Review implements Serializable{
 
 	@ApiModelProperty("审核问题")
     private String questionId;
+	
 
     public Integer getId() {
         return id;

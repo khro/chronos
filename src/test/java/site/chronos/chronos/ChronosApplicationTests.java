@@ -1,8 +1,8 @@
 package site.chronos.chronos;
 
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
+
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -46,7 +46,7 @@ public class ChronosApplicationTests {
 	 @Autowired
 	 private MockMvc mockMvc;
 	 
-//	 @After
+	 @After
 	    public void Test() throws Exception{
 	        // 得到swagger.json,写入outputDir目录中
 	        mockMvc.perform(RestDocumentationRequestBuilders.get(Swagger2Controller.DEFAULT_URL).accept(MediaType.APPLICATION_JSON))
@@ -65,41 +65,100 @@ public class ChronosApplicationTests {
 	    }
 	@Test
 	public void contextLoads() throws Exception {
-//		MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
-//		map.add("phone", "1");
-//		map.add("pass", "2");
-//		 mockMvc.perform(get("/u/login").params(map)
-//	                .accept(MediaType.APPLICATION_JSON))
-//	                .andExpect(status().isOk())
-//	                .andDo(MockMvcRestDocumentation.document("login", preprocessResponse(prettyPrint())));
+		MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
+		map.add("phone", "15869007707");
+		map.add("pass", "15869007707");
+		 mockMvc.perform(put("/u/login").params(map)
+	                .accept(MediaType.APPLICATION_JSON))
+	                .andExpect(status().isOk())
+	                .andDo(MockMvcRestDocumentation.document("login", preprocessResponse(prettyPrint())));
 		 
 		 //根据问题查询评论
-//		 mockMvc.perform(get("/c/question").param("questionId","0E9F0D5DD79A4AD9BE14DB125592861C")
-//	                .accept(MediaType.APPLICATION_JSON))
-//	                .andExpect(status().isOk())
-//	                .andDo(MockMvcRestDocumentation.document("question", preprocessResponse(prettyPrint())));
-		 //根据Comment获取子评论Comment
-//		 mockMvc.perform(get("/c/1")
-//	                .accept(MediaType.APPLICATION_JSON))
-//	                .andExpect(status().isOk())
-//	                .andDo(MockMvcRestDocumentation.document("getCommentByCommentId", preprocessResponse(prettyPrint())));
+		 mockMvc.perform(get("/c/question").param("questionId","0E9F0D5DD79A4AD9BE14DB125592861C")
+	                .accept(MediaType.APPLICATION_JSON))
+	                .andExpect(status().isOk())
+	                .andDo(MockMvcRestDocumentation.document("question", preprocessResponse(prettyPrint())));
+//		 根据Comment获取子评论Comment
+		 mockMvc.perform(get("/c/1")
+	                .accept(MediaType.APPLICATION_JSON))
+	                .andExpect(status().isOk())
+	                .andDo(MockMvcRestDocumentation.document("getCommentByCommentId", preprocessResponse(prettyPrint())));
 		 
 		//根据ID获取问题
-//		 mockMvc.perform(get("/q/0E9F0D5DD79A4AD9BE14DB125592861C")
-//	                .accept(MediaType.APPLICATION_JSON))
-//	                .andExpect(status().isOk())
-//	                .andDo(MockMvcRestDocumentation.document("question", preprocessResponse(prettyPrint())));
+		 mockMvc.perform(get("/q/0E9F0D5DD79A4AD9BE14DB125592861C")
+	                .accept(MediaType.APPLICATION_JSON))
+	                .andExpect(status().isOk())
+	                .andDo(MockMvcRestDocumentation.document("question", preprocessResponse(prettyPrint())));
 		
 		 //添加问题addQuestion
 		Question question = new Question();
 		question.setTitle("mockMvc测试标题");
 		question.setQuestion("mockMvc测试内容");
-		mockMvc.perform(RestDocumentationRequestBuilders.put("/q/addQuestion").contentType(MediaType.APPLICATION_JSON)
+		question.setUserId("F00D6C67D7704AE2B9163945EC56BCC4");
+		mockMvc.perform(RestDocumentationRequestBuilders.put("/q/addQuestion").contentType(MediaType.APPLICATION_JSON).characterEncoding("UTF-8")
 					.content(CommonConstants.GSONIGNORENULL.toJson(question))
-					.session((MockHttpSession)getLoginSession()) 
+//					.session((MockHttpSession)getLoginSession()) 
 	                .accept(MediaType.APPLICATION_JSON))
+//        			.andDo(print())
 	                .andExpect(status().isOk())
 	                .andDo(MockMvcRestDocumentation.document("addQuestion", preprocessResponse(prettyPrint())));
+		
+		
+		//置顶问题
+		mockMvc.perform(RestDocumentationRequestBuilders.put("/q/1CAB7AB2A27E45F694A9D39925E0DDAC").contentType(MediaType.APPLICATION_JSON).characterEncoding("UTF-8")
+//					.content(CommonConstants.GSONIGNORENULL.toJson(question))
+//					.session((MockHttpSession)getLoginSession()) 
+	                .accept(MediaType.APPLICATION_JSON))
+//        			.andDo(print())
+	                .andExpect(status().isOk())
+	                .andDo(MockMvcRestDocumentation.document("sortQuestion", preprocessResponse(prettyPrint())));
+		
+		//查询问题
+		
+		mockMvc.perform(RestDocumentationRequestBuilders.put("/q/selectQuestion").contentType(MediaType.APPLICATION_JSON).characterEncoding("UTF-8")
+//				.content(CommonConstants.GSONIGNORENULL.toJson(question))
+//				.session((MockHttpSession)getLoginSession()) 
+                .accept(MediaType.APPLICATION_JSON))
+//    			.andDo(print())
+                .andExpect(status().isOk())
+                .andDo(MockMvcRestDocumentation.document("selectQuestion", preprocessResponse(prettyPrint())));
+	
+		//提交问题审核
+		Question question1 = new Question();
+		question1.setTitle("mockMvc review测试标题");
+		question1.setQuestion("mockMvc review测试内容");
+		question1.setUserId("F00D6C67D7704AE2B9163945EC56BCC4");
+		mockMvc.perform(RestDocumentationRequestBuilders.put("/r/question").contentType(MediaType.APPLICATION_JSON).characterEncoding("UTF-8")
+					.content(CommonConstants.GSONIGNORENULL.toJson(question1))
+//					.session((MockHttpSession)getLoginSession()) 
+	                .accept(MediaType.APPLICATION_JSON))
+//        			.andDo(print())
+	                .andExpect(status().isOk())
+	                .andDo(MockMvcRestDocumentation.document("/r/question", preprocessResponse(prettyPrint())));
+
+		
+		//查询所有审核
+		mockMvc.perform(RestDocumentationRequestBuilders.get("/r/selectReview").contentType(MediaType.APPLICATION_JSON).characterEncoding("UTF-8")
+	                .accept(MediaType.APPLICATION_JSON))
+	                .andExpect(status().isOk())
+	                .andDo(MockMvcRestDocumentation.document("/r/question", preprocessResponse(prettyPrint())));
+
+		
+			//查询自己的待审核问题
+				mockMvc.perform(RestDocumentationRequestBuilders.get("/r/user/selectReview/F00D6C67D7704AE2B9163945EC56BCC4").contentType(MediaType.APPLICATION_JSON).characterEncoding("UTF-8")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(MockMvcRestDocumentation.document("/r/user/selectReviewn", preprocessResponse(prettyPrint())));
+
+		//审核完毕  通过或者拒绝
+		MultiValueMap<String, String> map1 = new LinkedMultiValueMap<String, String>();
+		map1.add("reviewId", "1");
+		map1.add("status", "10");
+				mockMvc.perform(RestDocumentationRequestBuilders.put("/r/reviewOver").params(map1)
+						.contentType(MediaType.APPLICATION_JSON).characterEncoding("UTF-8")
+		                .accept(MediaType.APPLICATION_JSON))
+		                .andExpect(status().isOk())
+		                .andDo(MockMvcRestDocumentation.document("/r/reviewOver", preprocessResponse(prettyPrint())));
 	}
 	
 	   /** 
@@ -115,9 +174,11 @@ public class ChronosApplicationTests {
 		map.add("pass", "15869007707");
         MvcResult result = this.mockMvc  
                                 .perform((put("/u/login").params(map)))  
-                                .andExpect(status().isOk())  
+                                .andExpect(status().isOk()) 
+//                                .andDo(print())
                                 .andReturn();  
-        return result.getRequest().getSession();  
+        HttpSession session = result.getRequest().getSession();  
+        return session;
     } 
 
 }

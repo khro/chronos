@@ -7,6 +7,7 @@
     <result column="create_time" property="createTime" jdbcType="VARCHAR" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="sort" property="sort" jdbcType="INTEGER" />
+    <result column="is_review" property="isReview" jdbcType="VARCHAR" />
     <result column="title" property="title" jdbcType="VARCHAR" />
     <result column="is_del" property="isDel" jdbcType="INTEGER" />
   </resultMap>
@@ -14,7 +15,7 @@
     <result column="question" property="question" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, user_id, create_time, update_time, sort, title, is_del
+    id, user_id, create_time, update_time, sort, is_review, title, is_del
   </sql>
   <sql id="Blob_Column_List" >
     question
@@ -25,7 +26,7 @@
     ,
     <include refid="Blob_Column_List" />
     from chronos_question
-    where id = #{id,jdbcType=VARCHAR} and is_del = 0
+    where id = #{id,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from chronos_question
@@ -33,11 +34,13 @@
   </delete>
   <insert id="insert" parameterType="site.chronos.entity.Question" >
     insert into chronos_question (id, user_id, create_time, 
-      update_time, sort, title, 
-      is_del, question)
+      update_time, sort, is_review, 
+      title, is_del, question
+      )
     values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{sort,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
-      #{isDel,jdbcType=INTEGER}, #{question,jdbcType=LONGVARCHAR})
+      #{updateTime,jdbcType=TIMESTAMP}, #{sort,jdbcType=INTEGER}, #{isReview,jdbcType=VARCHAR}, 
+      #{title,jdbcType=VARCHAR}, #{isDel,jdbcType=INTEGER}, #{question,jdbcType=LONGVARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="site.chronos.entity.Question" >
     insert into chronos_question
@@ -56,6 +59,9 @@
       </if>
       <if test="sort != null" >
         sort,
+      </if>
+      <if test="isReview != null" >
+        is_review,
       </if>
       <if test="title != null" >
         title,
@@ -83,6 +89,9 @@
       <if test="sort != null" >
         #{sort,jdbcType=INTEGER},
       </if>
+      <if test="isReview != null" >
+        #{isReview,jdbcType=VARCHAR},
+      </if>
       <if test="title != null" >
         #{title,jdbcType=VARCHAR},
       </if>
@@ -109,6 +118,9 @@
       <if test="sort != null" >
         sort = #{sort,jdbcType=INTEGER},
       </if>
+      <if test="isReview != null" >
+        is_review = #{isReview,jdbcType=VARCHAR},
+      </if>
       <if test="title != null" >
         title = #{title,jdbcType=VARCHAR},
       </if>
@@ -127,6 +139,7 @@
       create_time = #{createTime,jdbcType=VARCHAR},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       sort = #{sort,jdbcType=INTEGER},
+      is_review = #{isReview,jdbcType=VARCHAR},
       title = #{title,jdbcType=VARCHAR},
       is_del = #{isDel,jdbcType=INTEGER},
       question = #{question,jdbcType=LONGVARCHAR}
@@ -138,10 +151,12 @@
       create_time = #{createTime,jdbcType=VARCHAR},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       sort = #{sort,jdbcType=INTEGER},
+      is_review = #{isReview,jdbcType=VARCHAR},
       title = #{title,jdbcType=VARCHAR},
       is_del = #{isDel,jdbcType=INTEGER}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+  
   
    <select id="selectQuestionAll" resultMap="ResultMapWithBLOBs" parameterType="site.chronos.entity.page.QuestionPage" >
     select 
@@ -151,11 +166,14 @@
     from chronos_question
    
     <where>
-        <if test="status!=null and status!=''">
-            status=#{status}
-        </if>
+	      <if test="userId != null" >
+	        user_id = #{userId,jdbcType=VARCHAR}
+	      </if>
+	      <if test="isReview != null" >
+	        and is_review = #{isReview,jdbcType=VARCHAR}
+	      </if>
     	and is_del = 0 
     </where>
-     order by create_time desc;
+     order by create_time desc
   </select>
 </mapper>

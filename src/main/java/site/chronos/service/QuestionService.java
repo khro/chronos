@@ -2,6 +2,7 @@ package site.chronos.service;
 
 import site.chronos.constant.Result;
 import site.chronos.entity.Question;
+import site.chronos.entity.page.QuestionPage;
 
 public interface QuestionService {
 	
@@ -40,5 +41,13 @@ public interface QuestionService {
 	 * @param id
 	 * @return
 	 */
-	public Result selectQuestionNotReview(String userId);
+	public Result selectQuestionNotReview(QuestionPage questionPage);
+	
+	/**
+	 * 更新问题
+	 * @param question
+	 * @return
+	 */
+	public Result updateQuestion(Question question);
+	
 }

@@ -19,6 +19,7 @@ import site.chronos.entity.page.QuestionPage;
 import site.chronos.exception.BusinessException;
 import site.chronos.mapper.QuestionMapper;
 import site.chronos.service.QuestionService;
+import site.chronos.service.ReviewService;
 import site.chronos.service.UserService;
 import site.chronos.utils.Utils;
 @Service
@@ -67,7 +68,7 @@ public class QuestionServiceImpl implements QuestionService {
 		}
 		Result selectUserById = userService.selectUserById(question.getUserId());
 		if(Objects.isNull(selectUserById.getResult())){
-			throw new BusinessException(ErrorCode.ERROR_ILLEGAL_PARAMTER);//User不存在
+			throw new BusinessException(ErrorCode.ERROR_ILLEGAL_PARAMTER);//ID错了。
 		}
 		question.setId(Utils.getNewId());
 		question.setCreateTime(Utils.getNewTime());
@@ -114,13 +115,21 @@ public class QuestionServiceImpl implements QuestionService {
 	}
 
 	@Override
-	public Result selectQuestionNotReview(String userId) {
-		if(StringUtils.isEmpty(userId)){
+	public Result selectQuestionNotReview(QuestionPage questionPage) {
+		if(StringUtils.isEmpty(questionPage.getUserId())){
 			throw new BusinessException(ErrorCode.ERROR_PARAMS);//USER为空
 		}
-		QuestionPage questionPage = new QuestionPage();
-		questionPage.setUserId(userId);
-		List<Question> selectQuestionAll = questionMapper.selectQuestionAll(questionPage);
+		List<Question> selectQuestionAll = questionMapper.selectQuestionAll(questionPage.enablePaging());
 		return new Result(selectQuestionAll);
+	}
+
+	@Override
+	public Result updateQuestion(Question question) {
+		if(StringUtils.isEmpty(question.getId())){
+			throw new BusinessException(ErrorCode.ERROR_ILLEGAL_PARAMTER);//USER为空
+		}
+		question.setIsDel(null); //不允许删除
+		questionMapper.updateByPrimaryKeySelective(question);
+		return new Result();
 	}
 }

@@ -32,7 +32,7 @@ public class UserController {
 			HttpSession session) throws Exception {
 		Result userLogin = userService.userLogin(phone, pass);
 		if(CommonConstants.CODE.equals(userLogin.getCode())){
-			session.setAttribute(CommonConstants.SESSION_KEY, phone);
+			session.setAttribute(CommonConstants.SESSION_KEY, (String)userLogin.getResult()); //userID加入到session
 		}
 		return ResponseEntity.ok(userLogin);
 	}
