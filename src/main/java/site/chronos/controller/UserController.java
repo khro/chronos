@@ -34,7 +34,7 @@ public class UserController {
 		if(CommonConstants.CODE.equals(userLogin.getCode())){
 			session.setAttribute(CommonConstants.SESSION_KEY, (String)userLogin.getResult()); //userID加入到session
 		}
-		return ResponseEntity.ok(userLogin);
+		return ResponseEntity.ok(new Result());
 	}
 	
 	@ApiOperation(value = "loginOut", notes = "登出")

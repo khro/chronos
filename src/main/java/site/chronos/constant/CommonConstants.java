@@ -34,6 +34,7 @@ public class CommonConstants {
         ERROR_LOGIN(0x00004, "请登录"),
         ERROR_REQUEST_TIMEOUT(0x00005, "请求过期"),
         ERROR_ACTION(0x00006, "操作非法"),
+        ERROR_USER_STATUS(0x00007, "账号状态异常，不允许该操作"),
         ERROR_IP_BLOCKED(0xFF000, "您的 ip 被限制访问"),
         ERROR_ILLEGAL_PARAMTER(0xFF001, "ID不合法"),
         ERROR_ILLEGAL_PHONE(0xFF002, "电话号码不能为空"),
@@ -50,6 +51,8 @@ public class CommonConstants {
         ERROR_QUESTION(0xFF009, "内容为空"),
         ERROR_ADD_REVIEW(0xFF010, "还有未审核问题。"),
         ERROR_REVIEW_NULL(0xFF011, "审核不存在。"),
+        ERROR_SUPPORT_ERROR(0xFF012, "今日已支持该问题。"),
+        ERROR_OPPSITION_ERROR(0xFF013, "今日已反对该问题。"),
         ;
         private Integer code;
         private String description;

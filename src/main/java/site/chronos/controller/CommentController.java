@@ -23,7 +23,7 @@ public class CommentController {
 	@Autowired
 	private CommentService commentService;
 
-	@ApiOperation(value = "/", notes = "根据问题查询Comment")
+	@ApiOperation(value = "/question", notes = "根据问题查询Comment")
 	@GetMapping("/question/{questionId}")
 	public ResponseEntity<Object> question(@PathVariable("questionId") String questionId) throws Exception {
 		Result selectById = commentService.selectByQuestion(questionId);

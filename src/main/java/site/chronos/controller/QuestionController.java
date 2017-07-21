@@ -40,9 +40,8 @@ public class QuestionController extends BaseController{
 	@ApiOperation(value="addQuestion",notes="添加Question")
 	@PutMapping("/addQuestion")
 	public ResponseEntity<Object> addQuestion(@RequestBody Question question,HttpSession session) throws Exception {
-//			String userId = getId(session);
-//			question.setUserId(userId);
-//			System.out.println("*******************"+userId);
+			String userId = getId(session);
+			question.setUserId(userId);
 			Result userRegiest = questionService.addQuestion(question);
 	      return ResponseEntity.ok(userRegiest);
 	  }
@@ -60,4 +59,13 @@ public class QuestionController extends BaseController{
 			Result questionAll = questionService.selectQuestionAll();
 	      return ResponseEntity.ok(questionAll);
 	  }
+	
+	@ApiOperation(value="supportQuestion",notes="支持该Question")
+	@PutMapping("/supportQuestion")
+	public ResponseEntity<Object> supportQuestion() throws Exception {
+			Result questionAll = questionService.selectQuestionAll();
+	      return ResponseEntity.ok(questionAll);
+	  }
+	
+	
 }

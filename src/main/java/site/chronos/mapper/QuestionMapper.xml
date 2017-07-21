@@ -4,6 +4,8 @@
   <resultMap id="BaseResultMap" type="site.chronos.entity.Question" >
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="support" property="support" jdbcType="INTEGER" />
+    <result column="opposition" property="opposition" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="VARCHAR" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="sort" property="sort" jdbcType="INTEGER" />
@@ -15,7 +17,8 @@
     <result column="question" property="question" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, user_id, create_time, update_time, sort, is_review, title, is_del
+    id, user_id, support, opposition, create_time, update_time, sort, is_review, title, 
+    is_del
   </sql>
   <sql id="Blob_Column_List" >
     question
@@ -33,14 +36,14 @@
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="site.chronos.entity.Question" >
-    insert into chronos_question (id, user_id, create_time, 
-      update_time, sort, is_review, 
-      title, is_del, question
-      )
-    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{sort,jdbcType=INTEGER}, #{isReview,jdbcType=VARCHAR}, 
-      #{title,jdbcType=VARCHAR}, #{isDel,jdbcType=INTEGER}, #{question,jdbcType=LONGVARCHAR}
-      )
+    insert into chronos_question (id, user_id, support, 
+      opposition, create_time, update_time, 
+      sort, is_review, title, 
+      is_del, question)
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{support,jdbcType=INTEGER}, 
+      #{opposition,jdbcType=INTEGER}, #{createTime,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{sort,jdbcType=INTEGER}, #{isReview,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
+      #{isDel,jdbcType=INTEGER}, #{question,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="site.chronos.entity.Question" >
     insert into chronos_question
@@ -50,6 +53,12 @@
       </if>
       <if test="userId != null" >
         user_id,
+      </if>
+      <if test="support != null" >
+        support,
+      </if>
+      <if test="opposition != null" >
+        opposition,
       </if>
       <if test="createTime != null" >
         create_time,
@@ -80,6 +89,12 @@
       <if test="userId != null" >
         #{userId,jdbcType=VARCHAR},
       </if>
+      <if test="support != null" >
+        #{support,jdbcType=INTEGER},
+      </if>
+      <if test="opposition != null" >
+        #{opposition,jdbcType=INTEGER},
+      </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=VARCHAR},
       </if>
@@ -109,6 +124,12 @@
       <if test="userId != null" >
         user_id = #{userId,jdbcType=VARCHAR},
       </if>
+      <if test="support != null" >
+        support = #{support,jdbcType=INTEGER},
+      </if>
+      <if test="opposition != null" >
+        opposition = #{opposition,jdbcType=INTEGER},
+      </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=VARCHAR},
       </if>
@@ -136,6 +157,8 @@
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="site.chronos.entity.Question" >
     update chronos_question
     set user_id = #{userId,jdbcType=VARCHAR},
+      support = #{support,jdbcType=INTEGER},
+      opposition = #{opposition,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=VARCHAR},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       sort = #{sort,jdbcType=INTEGER},
@@ -148,6 +171,8 @@
   <update id="updateByPrimaryKey" parameterType="site.chronos.entity.Question" >
     update chronos_question
     set user_id = #{userId,jdbcType=VARCHAR},
+      support = #{support,jdbcType=INTEGER},
+      opposition = #{opposition,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=VARCHAR},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       sort = #{sort,jdbcType=INTEGER},
@@ -156,7 +181,6 @@
       is_del = #{isDel,jdbcType=INTEGER}
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  
   
    <select id="selectQuestionAll" resultMap="ResultMapWithBLOBs" parameterType="site.chronos.entity.page.QuestionPage" >
     select 
@@ -176,4 +200,13 @@
     </where>
      order by create_time desc
   </select>
+  
+   <update id="supportQuestion">
+    update chronos_question set  support = support + #{support,jdbcType=INTEGER}  where id = #{id,jdbcType=VARCHAR} and is_del = 0
+  </update>
+  
+    <update id="oppositionQuestion">
+    update chronos_question set  opposition = opposition + #{opposition,jdbcType=INTEGER}  where id = #{id,jdbcType=VARCHAR} and is_del = 0
+  </update>
+  
 </mapper>

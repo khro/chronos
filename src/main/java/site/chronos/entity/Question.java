@@ -18,6 +18,12 @@ public class Question  implements Serializable{
 
 	@ApiModelProperty("用户ID")
     private String userId;
+	
+	@ApiModelProperty("支持票数")
+	private Integer support;
+	
+	@ApiModelProperty("反对票数")
+	private Integer opposition;
 
 	@ApiModelProperty("创建时间")
     private String createTime;
@@ -56,7 +62,25 @@ public class Question  implements Serializable{
         this.userId = userId == null ? null : userId.trim();
     }
 
-    public String getCreateTime() {
+    
+
+	public Integer getSupport() {
+		return support;
+	}
+
+	public void setSupport(Integer support) {
+		this.support = support;
+	}
+
+	public Integer getOpposition() {
+		return opposition;
+	}
+
+	public void setOpposition(Integer opposition) {
+		this.opposition = opposition;
+	}
+
+	public String getCreateTime() {
         return createTime;
     }
 

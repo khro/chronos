@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="site.chronos.mapper.QuestionRecordingMapper" >
+  <resultMap id="BaseResultMap" type="site.chronos.entity.QuestionRecording" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="question_id" property="questionId" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="question_func" property="questionFunc" jdbcType="VARCHAR" />
+    <result column="question_func_about" property="questionFuncAbout" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, question_id, create_time, create_by, question_func, question_func_about, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from chronos_question_recording
+    where id = #{id,jdbcType=INTEGER} 
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from chronos_question_recording
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="site.chronos.entity.QuestionRecording" >
+    insert into chronos_question_recording (id, question_id, create_time, 
+      create_by, question_func, question_func_about, 
+      update_time)
+    values (#{id,jdbcType=INTEGER}, #{questionId,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, 
+      #{createBy,jdbcType=VARCHAR}, #{questionFunc,jdbcType=VARCHAR}, #{questionFuncAbout,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="site.chronos.entity.QuestionRecording" >
+    insert into chronos_question_recording
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="questionId != null" >
+        question_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="questionFunc != null" >
+        question_func,
+      </if>
+      <if test="questionFuncAbout != null" >
+        question_func_about,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="questionId != null" >
+        #{questionId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="questionFunc != null" >
+        #{questionFunc,jdbcType=VARCHAR},
+      </if>
+      <if test="questionFuncAbout != null" >
+        #{questionFuncAbout,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="site.chronos.entity.QuestionRecording" >
+    update chronos_question_recording
+    <set >
+      <if test="questionId != null" >
+        question_id = #{questionId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="questionFunc != null" >
+        question_func = #{questionFunc,jdbcType=VARCHAR},
+      </if>
+      <if test="questionFuncAbout != null" >
+        question_func_about = #{questionFuncAbout,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="site.chronos.entity.QuestionRecording" >
+    update chronos_question_recording
+    set question_id = #{questionId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      question_func = #{questionFunc,jdbcType=VARCHAR},
+      question_func_about = #{questionFuncAbout,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+   <select id="selectByUserId" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from chronos_question_recording
+    where question_id = #{questionId,jdbcType=VARCHAR} and create_by = #{createBy,jdbcType=VARCHAR} order by create_time desc limt 1
+  </select>
+  
+</mapper>

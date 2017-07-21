@@ -2,6 +2,7 @@ package site.chronos.service;
 
 import site.chronos.constant.Result;
 import site.chronos.entity.Question;
+import site.chronos.entity.QuestionRecording;
 import site.chronos.entity.page.QuestionPage;
 
 public interface QuestionService {
@@ -49,5 +50,19 @@ public interface QuestionService {
 	 * @return
 	 */
 	public Result updateQuestion(Question question);
+	
+	/**
+	 * 支持问题
+	 * @param question
+	 * @return
+	 */
+	public Result supportQuestion(QuestionRecording questionRecording);
+	
+	/**
+	 * 反对问题
+	 * @param question
+	 * @return
+	 */
+	public Result oppositionQuestion(QuestionRecording questionRecording);
 	
 }

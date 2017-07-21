@@ -1,5 +1,8 @@
 package site.chronos.service.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -12,16 +15,19 @@ import org.springframework.stereotype.Service;
 import com.github.pagehelper.PageInfo;
 
 import site.chronos.constant.CommonConstants;
-import site.chronos.constant.Result;
 import site.chronos.constant.CommonConstants.ErrorCode;
+import site.chronos.constant.Result;
 import site.chronos.entity.Question;
+import site.chronos.entity.QuestionRecording;
+import site.chronos.entity.User;
 import site.chronos.entity.page.QuestionPage;
 import site.chronos.exception.BusinessException;
 import site.chronos.mapper.QuestionMapper;
 import site.chronos.service.QuestionService;
-import site.chronos.service.ReviewService;
 import site.chronos.service.UserService;
 import site.chronos.utils.Utils;
+import site.chronos.mapper.QuestionRecordingMapper;
+
 @Service
 public class QuestionServiceImpl implements QuestionService {
 
@@ -32,6 +38,8 @@ public class QuestionServiceImpl implements QuestionService {
 	private QuestionMapper questionMapper;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	QuestionRecordingMapper questionRecordingMapper;
 	
 	
 	/**
@@ -130,6 +138,80 @@ public class QuestionServiceImpl implements QuestionService {
 		}
 		question.setIsDel(null); //不允许删除
 		questionMapper.updateByPrimaryKeySelective(question);
+		return new Result();
+	}
+
+	/**
+	 * 点赞问题
+	 * @throws ParseException 
+	 */
+	@Override
+	public Result supportQuestion(QuestionRecording questionRecording){
+		if(StringUtils.isEmpty(questionRecording.getCreateBy())){
+			throw new BusinessException(ErrorCode.ERROR_ILLEGAL_PARAMTER);//USER为空
+		}
+		if(StringUtils.isEmpty(questionRecording.getQuestionId())){
+			throw new BusinessException(ErrorCode.ERROR_ILLEGAL_CONTANTS);//Question为空
+		}
+		//查询今天又没对该问题点赞，如果有，就提示当天只能给同一个问题点赞
+		
+		QuestionRecording selectByUserId = questionRecordingMapper.selectByUserId(questionRecording.getQuestionId(), questionRecording.getCreateBy());
+		if(selectByUserId!=null){
+			try {
+				Date parse = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(selectByUserId.getCreateTime());
+				Long time = (new Date().getTime() - parse.getTime())/1000;
+				if(time > (60 * 60 * 24)){ //对该问题最后一次点赞大于一天 ，不允许继续对该问题点赞
+					LOGGER.info("当用户已点赞，不允许再点赞:{},question:{}",questionRecording.getCreateBy(),questionRecording.getQuestionId());
+					throw new BusinessException(ErrorCode.ERROR_SUPPORT_ERROR);//不允许点赞了。
+				}
+			} catch (ParseException e) {
+				LOGGER.info("时间转换异常，不允许再点赞:{},question:{}",questionRecording.getCreateBy(),questionRecording.getQuestionId());
+				throw new BusinessException(ErrorCode.ERROR_SUPPORT_ERROR);//不允许点赞了。
+			}
+		}
+		questionRecording.setCreateTime(Utils.getNewTime());
+		questionRecording.setQuestionFunc("support");
+		questionRecording.setQuestionFuncAbout("1");
+		questionRecordingMapper.insertSelective(questionRecording); //存入记录表
+		questionMapper.supportQuestion(questionRecording.getQuestionId(),Integer.parseInt(questionRecording.getQuestionFuncAbout()));//对问题相关信息进行更新
+		return new Result();
+	}
+
+	@Override
+	public Result oppositionQuestion(QuestionRecording questionRecording) {
+		if(StringUtils.isEmpty(questionRecording.getCreateBy())){
+			throw new BusinessException(ErrorCode.ERROR_ILLEGAL_PARAMTER);//USER为空
+		}
+		if(StringUtils.isEmpty(questionRecording.getQuestionId())){
+			throw new BusinessException(ErrorCode.ERROR_ILLEGAL_CONTANTS);//Question为空
+		}
+		
+		Result selectUserById = userService.selectUserById(questionRecording.getCreateBy());
+		User user = (User)selectUserById.getResult();
+		if(user.getIsDel() != 0){
+			LOGGER.info("账号状态异常，不允许该操作：{}",questionRecording.getCreateBy());
+			throw new BusinessException(ErrorCode.ERROR_USER_STATUS);//账号状态异常，不允许该操作
+		}
+		//查询今天又没对该问题点赞，如果有，就提示当天只能给同一个问题点赞
+		QuestionRecording selectByUserId = questionRecordingMapper.selectByUserId(questionRecording.getQuestionId(), questionRecording.getCreateBy());
+		if(selectByUserId!=null){
+			try {
+				Date parse = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(selectByUserId.getCreateTime());
+				Long time = (new Date().getTime() - parse.getTime())/1000;
+				if(time > (60 * 60 * 24)){ //对该问题最后一次点赞大于一天 ，不允许继续对该问题点赞
+					LOGGER.info("当用户已点赞，不允许再点赞:{},question:{}",questionRecording.getCreateBy(),questionRecording.getQuestionId());
+					throw new BusinessException(ErrorCode.ERROR_SUPPORT_ERROR);//不允许反对了。
+				}
+			} catch (ParseException e) {
+				LOGGER.info("时间转换异常，不允许再点赞:{},question:{}",questionRecording.getCreateBy(),questionRecording.getQuestionId());
+				throw new BusinessException(ErrorCode.ERROR_SUPPORT_ERROR);//不允许反对了。
+			}
+		}
+		questionRecording.setCreateTime(Utils.getNewTime());
+		questionRecording.setQuestionFunc("opposition");
+		questionRecording.setQuestionFuncAbout("1");
+		questionRecordingMapper.insertSelective(questionRecording); //存入记录表
+		questionMapper.oppositionQuestion(questionRecording.getQuestionId(),Integer.parseInt(questionRecording.getQuestionFuncAbout()));//对问题相关信息进行更新
 		return new Result();
 	}
 }
