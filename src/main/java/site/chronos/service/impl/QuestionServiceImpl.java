@@ -153,8 +153,13 @@ public class QuestionServiceImpl implements QuestionService {
 		if(StringUtils.isEmpty(questionRecording.getQuestionId())){
 			throw new BusinessException(ErrorCode.ERROR_ILLEGAL_CONTANTS);//Question为空
 		}
+		Result selectUserById = userService.selectUserById(questionRecording.getCreateBy());
+		User user = (User)selectUserById.getResult();
+		if(user.getIsDel() != 0){
+			LOGGER.info("账号状态异常，不允许该操作：{}",questionRecording.getCreateBy());
+			throw new BusinessException(ErrorCode.ERROR_USER_STATUS);//账号状态异常，不允许该操作
+		}
 		//查询今天又没对该问题点赞，如果有，就提示当天只能给同一个问题点赞
-		
 		QuestionRecording selectByUserId = questionRecordingMapper.selectByUserId(questionRecording.getQuestionId(), questionRecording.getCreateBy());
 		if(selectByUserId!=null){
 			try {

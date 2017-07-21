@@ -6,6 +6,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
+import site.chronos.utils.cache.JedisClient;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 
@@ -27,5 +30,24 @@ public class ChronosApplication {
 		return new BCryptPasswordEncoder();
 	} 
 	
-	
+	@Bean
+	public JedisPoolConfig getJedisPoolConfig(){
+		JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
+		jedisPoolConfig.setMaxTotal(100);
+		jedisPoolConfig.setMaxIdle(10);
+		jedisPoolConfig.setMinIdle(2);
+		jedisPoolConfig.setMaxWaitMillis(5000);
+		return jedisPoolConfig;
+	}
+	@Bean
+	public JedisPool getJedisPool(){
+		JedisPool jedisPool = new JedisPool(getJedisPoolConfig(), "localhost", 6379, 5000, "redisxiao", 0);
+		return jedisPool;
+	}
+	@Bean
+	public JedisClient getJedisClient(){
+		JedisClient jedisClient = new JedisClient();
+		jedisClient.setJedisPool(getJedisPool());
+		return jedisClient;
+	}
 }
