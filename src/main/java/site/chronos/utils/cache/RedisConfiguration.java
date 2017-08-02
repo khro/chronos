@@ -31,6 +31,7 @@ public class RedisConfiguration {
 			factory.setTimeout(redisProperties.getTimeout());
 		}
 		factory.setPort(redisProperties.getPort());
+		//RedisTemplate
 		return factory;
 	}
 }

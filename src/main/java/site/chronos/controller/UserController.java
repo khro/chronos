@@ -1,11 +1,14 @@
 package site.chronos.controller;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,6 +19,7 @@ import io.swagger.annotations.ApiOperation;
 import site.chronos.constant.CommonConstants;
 import site.chronos.constant.Result;
 import site.chronos.service.UserService;
+import org.springframework.data.redis.core.RedisTemplate;
 
 @Controller
 @RequestMapping("/u")
@@ -25,6 +29,9 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private RedisTemplate<String, String> redisTemplate;
 
 	@ApiOperation(value = "login", notes = "登录")
 	@PutMapping("/login")
@@ -50,6 +57,13 @@ public class UserController {
 			HttpSession session) throws Exception {
 		Result userRegiest = userService.userRegiest(phone, pass);
 		return ResponseEntity.ok(userRegiest);
+	}
+	
+	@GetMapping("/test")
+	public ResponseEntity<Object> test() throws Exception {
+//		redisTemplate.opsForValue().set("a", "a1", 10, TimeUnit.SECONDS);
+		String string = redisTemplate.opsForValue().get("a");
+		return ResponseEntity.ok(string);
 	}
 
 }
