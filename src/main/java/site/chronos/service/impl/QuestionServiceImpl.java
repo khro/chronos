@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageInfo;
@@ -41,6 +42,8 @@ public class QuestionServiceImpl implements QuestionService {
 	@Autowired
 	QuestionRecordingMapper questionRecordingMapper;
 	
+	@Autowired
+	private RedisTemplate<String, String> redisTemplate;
 	
 	/**
 	 * 根据ID查询问题

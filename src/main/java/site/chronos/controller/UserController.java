@@ -61,7 +61,7 @@ public class UserController {
 	
 	@GetMapping("/test")
 	public ResponseEntity<Object> test() throws Exception {
-//		redisTemplate.opsForValue().set("a", "a1", 10, TimeUnit.SECONDS);
+		redisTemplate.opsForValue().set("a", "a1", 10, TimeUnit.SECONDS);
 		String string = redisTemplate.opsForValue().get("a");
 		return ResponseEntity.ok(string);
 	}

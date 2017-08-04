@@ -19,7 +19,10 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @SpringBootApplication
 @MapperScan("site.chronos.mapper")
 public class ChronosApplication {
-
+	
+//	@Autowired
+//	private Environment env;
+	
 	public static void main(String[] args) {
 		SpringApplication.run(ChronosApplication.class, args);
 	}
@@ -54,5 +57,20 @@ public class ChronosApplication {
 //        template.setHashValueSerializer(stringSerializer );
         return template;
     }
-	
+
+
+//	@Bean(destroyMethod = "shutdown")
+//	public RedissonClient redissonClient() throws IOException {
+//		String[] profiles = env.getActiveProfiles();
+//		String profile = "local";
+//		if(profiles.length > 0) {
+//			profile = "-" + profiles[0];
+//		}
+////		io.netty.util.NettyRuntime
+//		InputStream inputStream = new ClassPathResource("redisson-" + profile + ".yml").getInputStream();
+//		System.out.println("*******"+inputStream);
+//		return Redisson.create(
+//				Config.fromYAML(inputStream)
+//		);
+//	}
 }
