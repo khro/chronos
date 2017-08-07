@@ -4,6 +4,8 @@ import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpSession;
 
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import scala.reflect.internal.annotations.uncheckedBounds;
 import site.chronos.constant.CommonConstants;
 import site.chronos.constant.Result;
 import site.chronos.service.UserService;
@@ -32,6 +35,9 @@ public class UserController {
 	
 	@Autowired
 	private RedisTemplate<String, String> redisTemplate;
+	
+	@Autowired
+	private RedissonClient redissonClient;
 
 	@ApiOperation(value = "login", notes = "登录")
 	@PutMapping("/login")
@@ -61,8 +67,21 @@ public class UserController {
 	
 	@GetMapping("/test")
 	public ResponseEntity<Object> test() throws Exception {
-		redisTemplate.opsForValue().set("a", "a1", 10, TimeUnit.SECONDS);
+		RLock lock = redissonClient.getLock("1");
+		try {
+			lock.lock(10, TimeUnit.SECONDS);
+			Thread.sleep(5000);
+			redisTemplate.opsForValue().set("a", "a1", 20, TimeUnit.SECONDS);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			if(lock!=null){
+				lock.unlock();
+			}
+		}
 		String string = redisTemplate.opsForValue().get("a");
+		
 		return ResponseEntity.ok(string);
 	}
 

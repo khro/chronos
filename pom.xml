@@ -86,7 +86,7 @@
 		    <groupId>biz.paluch.redis</groupId>
 		    <artifactId>lettuce</artifactId>
 		    <version>4.2.2.Final</version>
-		    <exclusions>
+		   <!--  <exclusions>
 		    	<exclusion>
 		    		 <groupId>io.netty</groupId>
 		    		<artifactId>netty-common</artifactId>
@@ -111,7 +111,7 @@
 		    		 <groupId>io.netty</groupId>
 		    		 <artifactId>netty-handler</artifactId>
 		    	</exclusion>
-		    </exclusions>
+		    </exclusions> -->
 		</dependency>
 		<dependency>
 		    <groupId>org.springframework.session</groupId>
@@ -126,6 +126,11 @@
 			<artifactId>thymeleaf-extras-springsecurity4</artifactId>
 		</dependency>
 		<dependency>
+		    <groupId>com.github.linux-china</groupId>
+		    <artifactId>spring-boot-starter-redisson</artifactId>
+		    <version>3.3.2</version>
+		</dependency>
+		<!-- <dependency>
 			<groupId>org.redisson</groupId>
 			<artifactId>redisson</artifactId>
 			<version>3.3.2</version>
@@ -155,12 +160,12 @@
 		    		 <artifactId>netty-handler</artifactId>
 		    	</exclusion>
 		    </exclusions>
-		</dependency>
-		<dependency>
+		</dependency> -->
+		<!-- <dependency>
 			<groupId>io.netty</groupId>
 		    <artifactId>netty-all</artifactId>
 		      <version>4.0.48.Final</version>
-		</dependency>
+		</dependency> -->
 <!-- 		<dependency>
 		    <groupId>io.netty</groupId>
 		    <artifactId>netty-all</artifactId>
@@ -221,6 +226,11 @@
 		    <groupId>com.caucho</groupId>
 		    <artifactId>hessian</artifactId>
 		    <version>4.0.38</version>
+		</dependency>
+		<dependency>
+			<groupId>org.scala-lang</groupId>
+			<artifactId>scala-reflect</artifactId>
+			<version>2.10.6</version>
 		</dependency>
 	</dependencies>
 
