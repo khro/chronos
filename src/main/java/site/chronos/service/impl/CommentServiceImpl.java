@@ -2,6 +2,8 @@ package site.chronos.service.impl;
 
 import java.util.List;
 
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +22,12 @@ public class CommentServiceImpl implements CommentService {
 	@Autowired
 	private CommentMapper CommentMapper;
 
+	@Autowired
+	private RedissonClient redissonClient;
+
 	@Override
 	public Result selectByQuestion(String questionId) {
-		CommentPage commentPage = new CommentPage();
+        CommentPage commentPage = new CommentPage();
 		commentPage.setQuestionId(questionId);
 		List<Comment> selectByQuestionId = CommentMapper.selectByQuestionId(commentPage.enablePaging());
 		PageInfo<Comment> pageInfo = new PageInfo<>(selectByQuestionId);

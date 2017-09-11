@@ -1,5 +1,13 @@
 package site.chronos;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.ssl.SSLContextBuilder;
+import org.apache.http.ssl.TrustStrategy;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,12 +16,15 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
+import org.springframework.web.client.RestTemplate;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import javax.net.ssl.SSLContext;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 
 @EnableSwagger2
 @SpringBootApplication
@@ -44,9 +55,9 @@ public class ChronosApplication {
         om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
         jackson2JsonRedisSerializer.setObjectMapper(om);
         RedisTemplate<String, Object> template = new RedisTemplate<String, Object>();
-        template.setConnectionFactory(redisConnectionFactory);
-        template.setKeySerializer(jackson2JsonRedisSerializer);
-        template.setValueSerializer(jackson2JsonRedisSerializer);
+        template.setConnectionFactory(redisConnectionFactory); //线程安全的连接工程
+        template.setKeySerializer(jackson2JsonRedisSerializer); //key序列化方式采用fastJson
+        template.setValueSerializer(jackson2JsonRedisSerializer); //value序列化方式
         template.setHashKeySerializer(jackson2JsonRedisSerializer);
         template.setHashValueSerializer(jackson2JsonRedisSerializer);
         template.afterPropertiesSet();        
@@ -58,19 +69,13 @@ public class ChronosApplication {
         return template;
     }
 
+    @Bean
+    public CloseableHttpClient httpsClientUtils(){
+        return  HttpClients.createDefault();
+    }
 
-//	@Bean(destroyMethod = "shutdown")
-//	public RedissonClient redissonClient() throws IOException {
-//		String[] profiles = env.getActiveProfiles();
-//		String profile = "local";
-//		if(profiles.length > 0) {
-//			profile = "-" + profiles[0];
-//		}
-////		io.netty.util.NettyRuntime
-//		InputStream inputStream = new ClassPathResource("redisson-" + profile + ".yml").getInputStream();
-//		System.out.println("*******"+inputStream);
-//		return Redisson.create(
-//				Config.fromYAML(inputStream)
-//		);
-//	}
+    @Bean
+    public RestTemplate restTemplate(){
+        return new RestTemplate();
+    }
 }
